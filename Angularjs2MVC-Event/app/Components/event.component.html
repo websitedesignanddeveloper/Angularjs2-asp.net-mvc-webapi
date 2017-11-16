@@ -1,0 +1,78 @@
+﻿<div class='panel panel-primary'>
+  <div class='panel-heading'>
+    Event Management
+  </div>
+  <div class='panel-body'>
+    <div class='table-responsive'>
+      <div style="padding-bottom:10px"><button class="btn btn-primary" (click)="addEvent()">Add</button></div>
+      <div class="alert alert-info" role="alert" *ngIf="indLoading"><img src="../../images/loading.gif" width="32" height="32" /> Loading...</div>
+      <div *ngIf='events && events.length==0' class="alert alert-info" role="alert">No record found!</div>
+      <table class='table table-striped' *ngIf='events && events.length'>
+        <thead>
+          <tr>
+            <th>Event Name</th>
+            <th>Description</th>
+            <th>Date</th>
+			<th>Venue</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let event of events">
+            <td>{{event.EventName}}</td>
+            <td>{{event.Description}}</td>
+            <td>{{event.EventDate}}</td>
+			<td>{{event.Venue}}</td>
+            <td>
+              <button title="Edit" class="btn btn-primary" (click)="editEvent(event.Id)">Edit</button>
+              <button title="Delete" class="btn btn-danger" (click)="deleteEvent(event.Id)">Delete</button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+      <div>
+      </div>
+    </div>
+    <div *ngIf="msg" role="alert" class="alert alert-info alert-dismissible">
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+      <span class="sr-only">Error:</span>
+      {{msg}}
+    </div>
+  </div>
+</div>
+
+<modal #modal>
+  <form novalidate (ngSubmit)="onSubmit(eventFrm)" [formGroup]="eventFrm">
+    <modal-header [show-close]="true">
+      <h4 class="modal-title">{{modalTitle}}</h4>
+    </modal-header>
+    <modal-body>
+
+      <div class="form-group">
+        <div class="col-lg-12">
+          <span>Event Name*</span>
+          <input type="text" class="form-control" placeholder="Event Name" formControlName="EventName">
+        </div><br/>
+        <div class="col-lg-12">
+          <span>Description</span>
+          <input type="text" class="form-control" placeholder="Description" formControlName="Description">
+        </div><br/>
+        <div class="col-lg-6">
+          <span>Event Date*</span>
+           <input type="date" class="form-control" placeholder="Event Date" formControlName="EventDate">
+        </div>
+		<div class="col-lg-6">
+          <span>Event Venue*</span>
+           <input type="text" class="form-control" placeholder="Event Venue" formControlName="Venue">
+        </div><br/><br/>
+      </div>
+    </modal-body>
+    <modal-footer>
+      <div>
+        <a class="btn btn-default" (click)="modal.dismiss()">Cancel</a>
+        <button type="submit" [disabled]="eventFrm.invalid" class="btn btn-primary">{{modalBtnTitle}}</button>
+      </div>
+    </modal-footer>
+  </form>
+</modal>
